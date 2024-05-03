@@ -340,7 +340,7 @@ Content-Type: application/json
 | `urlFormat` | String | Data carrier link format: `DigitalLink` or `ShortUrl` |
 | `useDefaultSettings` | Boolean | Use default settings to create the data carrier(s) |
 
-### >List Products
+### List Products
 
 ```
 GET /products
