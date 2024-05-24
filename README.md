@@ -29,6 +29,8 @@ https://api.dmrc.app/rest
 For each [request](#requests) detailed below, append the path and any 
 parameters to the base URL.
 
+> The limit for GET operations is 1000 records per request.
+
 ### Tips
 
 * For date parameters, use the ISO standard datetimes, such as 
@@ -109,7 +111,7 @@ See
 
 ### Product Variant
 
-A product variant resource repesents a consumer product variant (CPV) of an 
+A product variant resource represents a consumer product variant (CPV) of an 
 existing product. See
 
 * [Create a Product Variant](#create-a-product-variant)
@@ -182,7 +184,7 @@ A brand represents a customer's brand. See
 
 ### Functional Name
 
-A functional name respresents the type or purpose of a product. In the 
+A functional name represents the type or purpose of a product. In the 
 Illuminate UI, this is labeled the "Product type." Examples are "hand 
 sanitizer" and "flour." See
 
@@ -247,6 +249,111 @@ This section contains request examples and parameters for the available endpoint
 * [List Functional Names](#list-functional-names)
 * [Create an Asset Type](#create-an-asset-type)
 * [List Asset Types](#list-asset-types)
+
+#### About the Digital Twin ID
+
+When updating information about a product, variant, or promotional asset, 
+you're amending *a part of* the digital twin. For example, adding 
+`customAttributes` to a product entails adding additional data to the product 
+record of a digital twin. When you add images to a product (or product 
+variant or promotional asset), you're actually adding another `resourceType` 
+to the digital twin itself. The digital twin can contain a product, variant, 
+or promotional asset record, images, data carriers, and more.
+
+Each digital twin has a unique `id`, which isn't displayed in the Illuminate 
+UI. For example, if you use the UI to look at a product digital twin, the URL 
+in the browser's address bar takes this form:
+https://*domain*/*accountId*/digital-twins/*productId*
+
+Some endpoints take a `digitalTwinId` as input, such as 
+`POST /digitalTwinImages/create` and `POST /dataCarriers`. The `productId` isn't 
+the same as the digital twin's `id` (that is, the `digitalTwinId`); setting 
+`digitalTwinId` to the `productId` value won't return the correct result.
+
+An easy way to get the digital twin's `id` is to call `GET /digitalTwins` with 
+a filter and include the `productId` in the `product.ids` array:
+
+```json
+filter: {
+    "product": {
+        "ids": [
+            "$PRODUCT_ID"
+        ]
+    }
+}
+```
+
+Similarly, to get the digital twin's `id` for a product variant or promotional 
+asset, the filter might look like this:
+
+```json
+filter: {
+    "productVariant": {
+        "ids": [
+            "$VARIANT_ID"
+        ]
+    }
+}
+```
+
+or 
+
+```json
+filter: {
+    "promotionalAsset": {
+        "ids": [
+            "$PROMOASSET_ID"
+        ]
+    }
+}
+```
+
+In the sample `GET /digitalTwins` output below, note the `node.id` and 
+`digitalTags.digitalTwinId` value. This is the digital twin's `id` for the 
+specified product (or product variant or promotional asset) twin. You set 
+the `digitalTwinId` to that value when calling endpoints that require it.
+
+> The `digitalTags` array is empty for digital twins that have no data carriers.
+
+```json
+{
+    "edges": [
+        {
+            "cursor": "aaaa1111-f211-44fa-ef56-96ce6b23797b",
+            "node": {
+                "created": "2024-05-01T21:51:18.776Z",
+                "createdById": "auth0|12345a6789b012c345d67d8e",
+                "digitalTags": [
+                    {
+                        "accountId": "a1b2c3d4-e5f6-a1b2-c3d4-e3cacf1d35a3",
+                        ...
+                        "digitalTwinId": "aaaa1111-f211-44fa-ef56-96ce6b23797b",
+                        "id": "d1c2b3a4-58f6-66ee-55ff-2c4f92205b8f",
+                        ...
+                    }
+                ],
+                "id": "aaaa1111-f211-44fa-ef56-96ce6b23797b",
+                "images": {
+                    ...
+                },
+                "modified": "2024-05-01T21:51:18.776Z",
+                "modifiedById": "auth0|12345a6789b012c345d67d8e",
+                "product": {
+                    "accountId": "a1b2c3d4-e5f6-a1b2-c3d4-e3cacf1d35a3",
+                    ...
+                    "id": "4321dcba-a09b-48fb-76fe-c7d11e79b3ac",
+                    "identifier": "00987654000321",
+                    ...
+                },
+                "productId": "4321dcba-a09b-48fb-76fe-c7d11e79b3ac",
+                ...
+            },
+            "__typename": "DigitalTwinEdge"
+        }
+    ],
+    ...
+}
+```
 
 ### List Digital Twins
 
@@ -654,9 +761,12 @@ Content-Type: application/json
 
 Creates a data carrier for a digital twin that doesn't have one. 
 
-Setting `useDefaultSettings` to true eliminates the need to set the `tagType`, 
-`shortUrlDomain`, and `urlFormat`; Illuminate creates all the account's
-default data carrier type formats using their default values.
+Setting `useDefaultSettings` to true eliminates the need to set the 
+`shortUrlDomain` and `urlFormat`; Illuminate creates the specified data carrier 
+type format using its default values.
+
+> If `useDefaultSettings` is set to false, `shortUrlDomain` and `urlFormat` 
+must be set regardless of `tagType`.
 
 ```
 POST /dataCarriers
@@ -911,7 +1021,11 @@ The following examples will help you understand what you can do with the
 Illuminate API.
 
 * [List Digital Twins with Search](#list-digital-twins-with-search)
-* [Create a Product](#create-a-product-example)
+* [Create a Product Example](#create-a-product-example)
+* [Filter Products by GTIN](#filter-products-by-gtin)
+* [Filter Promotional Assets by ID](#filter-promotional-assets-by-id)
+* [Update a Product Variant Example](#update-a-product-variant-example)
+* [Create a Data Carrier Example](#create-a-data-carrier-example)
 
 ### List Digital Twins with Search
 
@@ -923,9 +1037,9 @@ curl -H "Authorization: ApiKey $API_KEY" \
   -X GET '$API_URL/digitalTwins?accountId=$ACCOUNT_ID&first=30&order=MODIFIED_DESC&images_first=1&filter={"query":"example"}'
 ```
 
-### Create a Product
+### Create a Product Example
 
-Create a product digital twin in the 'Beauty/Personal Care/Hygiene'
+Create a product digital twin with data carrier(s) in the 'Beauty/Personal Care/Hygiene'
 category using the account's default data carrier settings:
 
 ```shell
@@ -939,11 +1053,95 @@ curl -H "Authorization: ApiKey $API_KEY" \
     "gpcCategoryCode": "53000000",
     "identifier": "01234567891224",
     "customAttributes": {
-      "first": "one",
-      "second": "two",
-      "three": "three" },
+        "first": "one",
+        "second": "two",
+        "third": "three"
+    },
     "useDefaultSettings": true
-  }'
+}'
+```
+
+### Filter Products by GTIN
+
+Get product digital twins using a filter on the GTIN or other primary identifier (such as SKU).
+
+```shell
+curl -H "Authorization: ApiKey $API_KEY" \
+  -H Content-Type:application/json \
+  -X GET '$API_URL/products' \
+  -d '{
+    "accountId": "$ACCOUNT_ID",
+    "order": "MODIFIED_ASC",
+    "first": 30,
+    "filter": {
+        "product": {
+            "identifiers": [
+                "$GTIN1",
+                "$GTIN2",
+                "$GTINn"
+            ]
+        }
+    }
+}'
+```
+
+### Filter Promotional Assets by ID
+
+Get promotional asset digital twins using a filter on the promotional asset's identifier (`promotionalAsset.id`).
+
+```shell
+curl -H "Authorization: ApiKey $API_KEY" \
+  -H Content-Type:application/json \
+  -X GET '$API_URL/promotionalAssets' \
+  -d '{
+    "accountId": "$ACCOUNT_ID",
+    "order": "MODIFIED_DESC",
+    "images_first": 10,
+    "filter": {
+        "promotionalAsset": {
+            "ids": [
+                "$PROMOASSET_ID1",
+                "$PROMOASSET_ID2",
+                "$PROMOASSET_IDn"
+            ]
+        }
+    },
+    "first": 10
+}'
+```
+
+### Update a Product Variant Example
+
+Update the reason code and remove custom attributes for a product variant digital twin.
+
+```shell
+curl -H "Authorization: ApiKey $API_KEY" \
+  -H Content-Type:application/json \
+  -X PUT '$API_URL/productVariants' \
+  -d '{
+    "accountId": "$ACCOUNT_ID",
+    "id": "$PRODUCTVARIANT_ID",
+    "patch": {
+        "consumerProductVariantReasonCode": "ADD_ADDITIONAL_LANGUAGE",
+        "customAttributes": {}
+    }
+}'
+```
+
+### Create a Data Carrier Example
+
+Create a digital watermark for a digital twin that doesn't have one. Be sure to use the digital twin's `id` rather than the `productId`, `productVariant.id`, or `promotionalAsset.id` for the `digitalTwinId` parameter. It might be helpful to run `GET /digitalTwins` first to get the digital twin's `id`.
+
+```shell
+curl -H "Authorization: ApiKey $API_KEY" \
+  -H Content-Type:application/json \
+  -X POST '$API_URL/dataCarriers' \
+  -d '{
+    "accountId": "$ACCOUNT_ID",
+    "digitalTwinId": "$DIGITAL_TWIN_ID",
+    "tagType": "DIGITAL_WATERMARK",
+    "useDefaultSettings": true
+}'
 ```
 
 ## Help
