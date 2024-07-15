@@ -104,7 +104,7 @@ See
 | `modifiedById` | String | ID of the user who last modified the product |
 | `netContent` | String | Net content of the product |
 | `productVariantsCount` | Number | Number of product variants for the product |
-| `productVariantsWithTagsCount` | Number | Number of product variants that have a digitalTag |
+| `productVariantsWithTagsCount` | Number | Number of product variants that have a data carrier |
 | `subBrandName` | String | Sub-brand name of the product (for future use) |
 | `targetMarketCountryCodes` | String list | Target market country codes of the product |
 | `tradeItemDescription` | String | Product's trade item description |
@@ -239,6 +239,7 @@ This section contains request examples and parameters for the available endpoint
 * [Delete a Promotional Asset Link](#delete-a-promotional-asset-link)
 * [Create a Data Carrier](#create-a-data-carrier)
 * [List Data Carriers](#list-data-carriers)
+* [List Digital Twin Images](#list-digital-twin-images)
 * [Upload a Digital Twin Image From File](#upload-a-digital-twin-image-from-file)
 * [Update a Digital Twin Image](#update-a-digital-twin-image)
 * [Create a Digital Twin Image From URL](#create-a-digital-twin-image-from-url)
@@ -308,51 +309,42 @@ filter: {
 }
 ```
 
-In the sample `GET /digitalTwins` output below, note the `node.id` and 
-`digitalTags.digitalTwinId` value. This is the digital twin's `id` for the 
+In the sample `GET /digitalTwins` output below, note the 
+`dataCarriers.digitalTwinId` value. This is the digital twin's `id` for the 
 specified product (or product variant or promotional asset) twin. You set 
 the `digitalTwinId` to that value when calling endpoints that require it.
 
-> The `digitalTags` array is empty for digital twins that have no data carriers.
+> The `dataCarriers` array is empty for digital twins that have no data carriers.
 
 ```json
-{
-    "edges": [
-        {
-            "cursor": "aaaa1111-f211-44fa-ef56-96ce6b23797b",
-            "node": {
-                "created": "2024-05-01T21:51:18.776Z",
-                "createdById": "auth0|12345a6789b012c345d67d8e",
-                "digitalTags": [
-                    {
-                        "accountId": "a1b2c3d4-e5f6-a1b2-c3d4-e3cacf1d35a3",
-                        ...
-                        "digitalTwinId": "aaaa1111-f211-44fa-ef56-96ce6b23797b",
-                        "id": "d1c2b3a4-58f6-66ee-55ff-2c4f92205b8f",
-                        ...
-                    }
-                ],
-                "id": "aaaa1111-f211-44fa-ef56-96ce6b23797b",
-                "images": {
-                    ...
-                },
-                "modified": "2024-05-01T21:51:18.776Z",
-                "modifiedById": "auth0|12345a6789b012c345d67d8e",
-                "product": {
-                    "accountId": "a1b2c3d4-e5f6-a1b2-c3d4-e3cacf1d35a3",
-                    ...
-                    "id": "4321dcba-a09b-48fb-76fe-c7d11e79b3ac",
-                    "identifier": "00987654000321",
-                    ...
-                },
-                "productId": "4321dcba-a09b-48fb-76fe-c7d11e79b3ac",
+[
+    {
+        "created": "2024-05-01T21:51:18.776Z",
+        "createdById": "auth0|12345a6789b012c345d67d8e",
+        "dataCarriers": [
+            {
+                "accountId": "a1b2c3d4-e5f6-a1b2-c3d4-e3cacf1d35a3",
                 ...
-            },
-            "__typename": "DigitalTwinEdge"
-        }
-    ],
+                "digitalTwinId": "aaaa1111-f211-44fa-ef56-96ce6b23797b",
+                "id": "d1c2b3a4-58f6-66ee-55ff-2c4f92205b8f",
+                ...
+            }
+        ],
+        "id": "aaaa1111-f211-44fa-ef56-96ce6b23797b",
+        "modified": "2024-05-01T21:51:18.776Z",
+        "modifiedById": "auth0|12345a6789b012c345d67d8e",
+        "product": {
+            "accountId": "a1b2c3d4-e5f6-a1b2-c3d4-e3cacf1d35a3",
+            ...
+            "id": "4321dcba-a09b-48fb-76fe-c7d11e79b3ac",
+            "identifier": "00987654000321",
+            ...
+        },
+        "productId": "4321dcba-a09b-48fb-76fe-c7d11e79b3ac",
+        ...
+    },
     ...
-}
+]
 ```
 
 ### List Digital Twins
@@ -403,8 +395,8 @@ Authorization: ApiKey $API_KEY
 
 ### Create a Product
 
-Setting `useDefaultSettings` to true eliminates the need to set the `tagType`, 
-`shortUrlDomain`, and `urlFormat`; Illuminate creates all the account's default 
+Setting `useDefaultSettings` to true eliminates the need to set the 
+`shortUrlDomain` and `urlFormat`; Illuminate creates all the account's default 
 data carrier type formats using their default values. 
 
 If the account was configured to allow an additional identifier, such as for an 
@@ -519,8 +511,8 @@ primary identifier.
 For the reason code, see the 
 [GS1 Consumer Product Variant in GDSN Implementation Guide](#tips). 
 
-Setting `useDefaultSettings` to true eliminates the need to set the `tagType`, 
-`shortUrlDomain`, and `urlFormat`; Illuminate creates all the account's default 
+Setting `useDefaultSettings` to true eliminates the need to set the 
+`shortUrlDomain` and `urlFormat`; Illuminate creates all the account's default 
 data carrier type formats using their default values. 
 
 ```
@@ -606,8 +598,8 @@ Content-Type: application/json
 Promotional assets don't have a GTIN, but they might have another identifier 
 such as an internal part number that you can set in `customerIdentifier`.
 
-Setting `useDefaultSettings` to true eliminates the need to set the `tagType`, 
-`shortUrlDomain`, and `urlFormat`; Illuminate creates all the account's default 
+Setting `useDefaultSettings` to true eliminates the need to set the 
+`shortUrlDomain` and `urlFormat`; Illuminate creates all the account's default 
 data carrier type formats using their default values. 
 
 ```
@@ -766,7 +758,7 @@ Setting `useDefaultSettings` to true eliminates the need to set the
 type format using its default values.
 
 > If `useDefaultSettings` is set to false, `shortUrlDomain` and `urlFormat` 
-must be set regardless of `tagType`.
+must be set regardless of `carrierType`.
 
 ```
 POST /dataCarriers
@@ -782,7 +774,7 @@ Content-Type: application/json
 | `consumerProductVariantIdentification` | String | Customer-provided product variant identifier |
 | `digitalTwinId` | String | Digital twin ID associated with the data carrier |
 | `shortUrlDomain` | String | URL of the data carrier |
-| `tagType` | String | Data carrier type format: `DIGITAL_WATERMARK` or `QR_CODE` |
+| `carrierType` | String | Data carrier type format: `DIGITAL_WATERMARK` or `QR_CODE` |
 | `urlFormat` | String | Data carrier link format: `DigitalLink` or `ShortUrl` |
 | `useDefaultSettings` | Boolean | Use default settings for generating the data carrier |
 
@@ -805,7 +797,22 @@ Authorization: ApiKey $API_KEY
 | Name | Type | Description |
 |------|------|-------------|
 | `digitalTwin.ids` | String list | List of digital twins to filter on |
-| `tagTypes` | String list | List of data carrier types to filter on |
+| `carrierTypes` | String list | List of data carrier types to filter on |
+
+### List Digital Twin Images
+
+```
+GET /digitalTwinImages
+Authorization: ApiKey $API_KEY
+```
+
+**Query Parameters**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `accountId` | String | Account ID |
+| `digitalTwinId` | String | Digital twin ID associated with the data carrier |
+| `first` | Number | Number of results to return per page |
 
 ### Upload a Digital Twin Image From File
 
@@ -1034,7 +1041,7 @@ Search for digital twins of all types where an applicable field
 
 ```shell
 curl -H "Authorization: ApiKey $API_KEY" \
-  -X GET '$API_URL/digitalTwins?accountId=$ACCOUNT_ID&first=30&order=MODIFIED_DESC&images_first=1&filter={"query":"example"}'
+  -X GET '$API_URL/digitalTwins?accountId=$ACCOUNT_ID&first=30&order=MODIFIED_DESC&filter={"query":"example"}'
 ```
 
 ### Create a Product Example
@@ -1096,7 +1103,6 @@ curl -H "Authorization: ApiKey $API_KEY" \
   -d '{
     "accountId": "$ACCOUNT_ID",
     "order": "MODIFIED_DESC",
-    "images_first": 10,
     "filter": {
         "promotionalAsset": {
             "ids": [
@@ -1139,7 +1145,7 @@ curl -H "Authorization: ApiKey $API_KEY" \
   -d '{
     "accountId": "$ACCOUNT_ID",
     "digitalTwinId": "$DIGITAL_TWIN_ID",
-    "tagType": "DIGITAL_WATERMARK",
+    "carrierType": "DIGITAL_WATERMARK",
     "useDefaultSettings": true
 }'
 ```
