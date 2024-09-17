@@ -358,13 +358,13 @@ Authorization: ApiKey $API_KEY
 
 **Query Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `accountId` | String | Account ID |
-| `first` | Number | Number of results to return per page |
-| `after` | String | ID given as the cursor in the previous page to read the next one |
-| `order` | String | Sort order for results: `CREATED_ASC`, `CREATED_DESC`, `MODIFIED_ASC`, `MODIFIED_DESC`, `TYPE_ASC`, or `TYPE_DESC` |
-| `filter` | Object | Filter to apply (see below) |
+| Name | Type | Required? | Description |
+|------|------|-----------|-------------|
+| `accountId` | String | yes | Account ID |
+| `first` | Number | yes | Number of results to return per page |
+| `after` | String | no | ID given as the cursor in the previous page to read the next one |
+| `order` | String | yes | Sort order for results: `CREATED_ASC`, `CREATED_DESC`, `MODIFIED_ASC`, `MODIFIED_DESC`, `TYPE_ASC`, or `TYPE_DESC` |
+| `filter` | Object | no | Filter to apply (see below) |
 
 **Filter Parameters**
 
@@ -417,27 +417,27 @@ Content-Type: application/json
 
 **Body Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `accountId` | String | Associated account ID |
-| `additionalTradeItemIdentification` | String | Additional trade identifier |
-| `brandId` | String | Product's [brand](#brand) ID |
-| `customAttributes` | Object | Custom attributes |
-| `descriptionShort` | String | Name of the product up to 64 characters long |
-| `descriptiveSize` | String | Descriptive size |
-| `digitalTag` | String | Data carrier type format: `DIGITAL_WATERMARK`, `DIGITAL_WATERMARK_AND_QR_CODE`, or `QR_CODE` |
-| `endAvailabilityDateTime` | String | End availability date time |
-| `firstOrderDateTime` | String | First order date time |
-| `functionalNameId` | String | ID of the product's [functional name](#functional-name) |
-| `gpcCategoryCode` | String | [Global Product Classification (GPC) category code](#tips) |
-| `identifier` | String | Product primary identifier, such as GTIN or SKU |
-| `netContent` | String | Net content |
-| `shortUrlDomain` | String | Short URL domain preference for creating a `QR_CODE` (ignored if `urlFormat` is `DigitalLink`) |
-| `subBrandName` | String | Sub-brand name (for future use) |
-| `targetMarketCountryCodes` | String list | Target market country codes |
-| `tradeItemDescription` | String | Product description up to 512 characters long |
-| `urlFormat` | String | Data carrier link format: `DigitalLink` or `ShortUrl` |
-| `useDefaultSettings` | Boolean | Use default settings to create the data carrier(s) |
+| Name | Type | Required? | Description |
+|------|------|-----------|-------------|
+| `accountId` | String | yes | Associated account ID |
+| `additionalTradeItemIdentification` | String | no | Additional trade identifier |
+| `brandId` | String | yes | Product's [brand](#brand) ID |
+| `customAttributes` | Object | no | Custom attributes |
+| `descriptionShort` | String | yes | Name of the product up to 64 characters long |
+| `descriptiveSize` | String | no | Descriptive size |
+| `digitalTag` | String | no | Data carrier type format: `DIGITAL_WATERMARK`, `DIGITAL_WATERMARK_AND_QR_CODE`, or `QR_CODE` |
+| `endAvailabilityDateTime` | String | no | End availability date time |
+| `firstOrderDateTime` | String | no | First order date time |
+| `functionalNameId` | String | no | ID of the product's [functional name](#functional-name) |
+| `gpcCategoryCode` | String | yes | [Global Product Classification (GPC) category code](#tips) |
+| `identifier` | String | yes | Product primary identifier, such as GTIN or SKU |
+| `netContent` | String | no | Net content |
+| `shortUrlDomain` | String | no | Short URL domain preference for creating a `QR_CODE` (ignored if `urlFormat` is `DigitalLink`) |
+| `subBrandName` | String | no | Sub-brand name (for future use) |
+| `targetMarketCountryCodes` | String list | no | Target market country codes |
+| `tradeItemDescription` | String | no | Product description up to 512 characters long |
+| `urlFormat` | String | no | Data carrier link format: `DigitalLink` or `ShortUrl` |
+| `useDefaultSettings` | Boolean | no | Use default settings to create the data carrier(s) |
 
 ### List Products
 
@@ -448,13 +448,13 @@ Authorization: ApiKey $API_KEY
 
 **Query Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `accountId` | String | Account ID |
-| `first` | Number | Number of results to return per page |
-| `after` | String | ID given as the cursor in the previous page to read the next one |
-| `order` | String | Sort order for results: `MODIFIED_ASC`, `MODIFIED_DESC`, `NAME_ASC`, or `NAME_DESC` |
-| `filter` | Object | Filter to apply (see below) |
+| Name | Type | Required? | Description |
+|------|------|-----------|-------------|
+| `accountId` | String | yes | Account ID |
+| `first` | Number | yes | Number of results to return per page |
+| `after` | String | no | ID given as the cursor in the previous page to read the next one |
+| `order` | String | yes | Sort order for results: `MODIFIED_ASC`, `MODIFIED_DESC`, `NAME_ASC`, or `NAME_DESC` |
+| `filter` | Object | no | Filter to apply (see below) |
 
 **Filter Parameters**
 
@@ -478,11 +478,11 @@ Content-Type: application/json
 
 **Body Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `accountId` | String | ID of the target account |
-| `id` | String | ID of the target product |
-| `patch` | `UpdateProductPatch` | Data patch to apply to the target product 
+| Name | Type | Required? | Description |
+|------|------|-----------|-------------|
+| `accountId` | String | yes | ID of the target account |
+| `id` | String | yes | ID of the target product |
+| `patch` | `UpdateProductPatch` | yes | Data patch to apply to the target product 
 (see below) |
 
 **UpdateProductPatch**
@@ -523,20 +523,20 @@ Content-Type: application/json
 
 **Body Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `accountId` | String | Associated account ID |
-| `consumerProductVariantDescription` | String | Product variant name up to 256 characters long |
-| `consumerProductVariantEndEffectiveDateTime` | String | Effective end date time |
-| `consumerProductVariantIdentification` | String | Product variant identifier |
-| `consumerProductVariantReasonCode` | String | Product variant reason code |
-| `consumerProductVariantStartEffectiveDateTime` | String | Effective start date time |
-| `customAttributes` | Object | Custom attributes |
-| `digitalTag` | String | Data carrier type: `DIGITAL_WATERMARK`, `DIGITAL_WATERMARK_AND_QR_CODE`, or `QR_CODE` |
-| `productIdentifier` | String | Primary identifier (such as GTIN or SKU) of the product that's related to the variant |
-| `shortUrlDomain` | String | Short URL domain preference |
-| `urlFormat` | String | Data carrier link format: `DigitalLink` or `ShortUrl` |
-| `useDefaultSettings` | Boolean | Use default settings for data carrier |
+| Name | Type | Required? | Description |
+|------|------|-----------|-------------|
+| `accountId` | String | yes | Associated account ID |
+| `consumerProductVariantDescription` | String | yes | Product variant name up to 256 characters long |
+| `consumerProductVariantEndEffectiveDateTime` | String | no | Effective end date time |
+| `consumerProductVariantIdentification` | String | yes | Product variant identifier |
+| `consumerProductVariantReasonCode` | String | yes | Product variant reason code |
+| `consumerProductVariantStartEffectiveDateTime` | String | no | Effective start date time |
+| `customAttributes` | Object | no | Custom attributes |
+| `digitalTag` | String | no | Data carrier type: `DIGITAL_WATERMARK`, `DIGITAL_WATERMARK_AND_QR_CODE`, or `QR_CODE` |
+| `productIdentifier` | String | yes | Primary identifier (such as GTIN or SKU) of the product that's related to the variant |
+| `shortUrlDomain` | String | no | Short URL domain preference |
+| `urlFormat` | String | no | Data carrier link format: `DigitalLink` or `ShortUrl` |
+| `useDefaultSettings` | Boolean | no | Use default settings for data carrier |
 
 ### List Product Variants
 
@@ -547,13 +547,13 @@ Authorization: ApiKey $API_KEY
 
 **Query Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `accountId` | String | Account ID |
-| `first` | Number | Number of results to return per page |
-| `after` | String | ID given as the cursor in the previous page to read the next one |
-| `order` | String | Sort order for results: `MODIFIED_ASC`, `MODIFIED_DESC`, `NAME_ASC`, or `NAME_DESC` |
-| `filter` | Object | Filter to apply (see below) |
+| Name | Type | Required? | Description |
+|------|------|-----------|-------------|
+| `accountId` | String | yes | Account ID |
+| `first` | Number | yes | Number of results to return per page |
+| `after` | String | no | ID given as the cursor in the previous page to read the next one |
+| `order` | String | yes | Sort order for results: `MODIFIED_ASC`, `MODIFIED_DESC`, `NAME_ASC`, or `NAME_DESC` |
+| `filter` | Object | no | Filter to apply (see below) |
 
 **Filter Parameters**
 
@@ -576,11 +576,11 @@ Content-Type: application/json
 
 **Body Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `accountId` | String | ID of the target account |
-| `id` | String | ID of the target product variant |
-| `patch` | `UpdateProductVariantPatch` | Data patch to apply to the target product variant |
+| Name | Type | Required? | Description |
+|------|------|-----------|-------------|
+| `accountId` | String | yes | ID of the target account |
+| `id` | String | yes | ID of the target product variant |
+| `patch` | `UpdateProductVariantPatch` | yes | Data patch to apply to the target product variant |
 
 **UpdateProductVariantPatch**
 
@@ -610,20 +610,20 @@ Content-Type: application/json
 
 **Body Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `accountId` | String | Associated account ID |
-| `assetTypeId` | String | Associated [asset type](#asset-type) ID |
-| `brandId` | String | ID of the associated product's [brand](#brand) |
-| `customAttributes` | Object | Custom attributes |
-| `customerIdentifier` | String | Customer-provided identifier |
-| `descriptionShort` | String | Short description of the asset up to 512 characters long |
-| `digitalTag` | String | Data carrier type: `DIGITAL_WATERMARK`, `DIGITAL_WATERMARK_AND_QR_CODE`, or `QR_CODE` |
-| `endDate` | String | The date the promotional asset was or will be removed from use. Must be on or after the `startDate` |
-| `shortUrlDomain` | String | Short URL domain preference |
-| `startDate` | String | The date the promotional asset was or will be first put into use. Must be on or before the `endDate`|
-| `urlFormat` | String | Data carrier link format: `DigitalLink` or `ShortUrl` |
-| `useDefaultSettings` | Boolean | Use default settings for data carrier |
+| Name | Type | Required? | Description |
+|------|------|-----------|-------------|
+| `accountId` | String | yes | Associated account ID |
+| `assetTypeId` | String | yes | Associated [asset type](#asset-type) ID |
+| `brandId` | String | yes | ID of the associated product's [brand](#brand) |
+| `customAttributes` | Object | no | Custom attributes |
+| `customerIdentifier` | String | no | Customer-provided identifier |
+| `descriptionShort` | String | yes | Short description of the asset up to 512 characters long |
+| `digitalTag` | String | no | Data carrier type: `DIGITAL_WATERMARK`, `DIGITAL_WATERMARK_AND_QR_CODE`, or `QR_CODE` |
+| `endDate` | String | no | The date the promotional asset was or will be removed from use. Must be on or after the `startDate` |
+| `shortUrlDomain` | String | no | Short URL domain preference |
+| `startDate` | String | no | The date the promotional asset was or will be first put into use. Must be on or before the `endDate`|
+| `urlFormat` | String | no | Data carrier link format: `DigitalLink` or `ShortUrl` |
+| `useDefaultSettings` | Boolean | no | Use default settings for data carrier |
 
 ### List Promotional Assets
 
@@ -634,13 +634,13 @@ Authorization: ApiKey $API_KEY
 
 **Query Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `accountId` | String | Account ID |
-| `first` | Number | Number of results to return per page |
-| `after` | String | ID given as the cursor in the previous page to read the next one |
-| `order` | String | Sort order for results: `MODIFIED_ASC`, `MODIFIED_DESC`, `NAME_ASC`, or `NAME_DESC` |
-| `filter` | Object | Filter to apply (see below) |
+| Name | Type | Required? | Description |
+|------|------|-----------|-------------|
+| `accountId` | String | yes | Account ID |
+| `first` | Number | yes | Number of results to return per page |
+| `after` | String | no | ID given as the cursor in the previous page to read the next one |
+| `order` | String | yes | Sort order for results: `MODIFIED_ASC`, `MODIFIED_DESC`, `NAME_ASC`, or `NAME_DESC` |
+| `filter` | Object | no | Filter to apply (see below) |
 
 **Filter Parameters**
 
@@ -658,11 +658,11 @@ Content-Type: application/json
 
 **Body Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `accountId` | String | ID of the target account |
-| `id` | String | ID of the target promotional asset |
-| `patch` | `UpdatePromotionalAssetPatch` | Data patch to apply to the target promotional asset |
+| Name | Type | Required? | Description |
+|------|------|-----------|-------------|
+| `accountId` | String | yes | ID of the target account |
+| `id` | String | yes | ID of the target promotional asset |
+| `patch` | `UpdatePromotionalAssetPatch` | yes | Data patch to apply to the target promotional asset |
 
 **UpdatePromotionalAssetPatch**
 
@@ -691,18 +691,18 @@ Content-Type: application/json
 
 **Body Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `accountId` | String | Associated account ID |
-| `links` | `PromotionalAssetLink` list | Array of promotional asset links (see below) |
+| Name | Type | Required? | Description |
+|------|------|-----------|-------------|
+| `accountId` | String | yes | Associated account ID |
+| `links` | `PromotionalAssetLink` list | yes | Array of promotional asset links (see below) |
 
 **PromotionalAssetLink**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `productId` | String | Associated product ID |
-| `productVariantId` | String | Associated product variant ID |
-| `promotionalAssetId` | String | Associated promotional asset ID |
+| Name | Type | Required? | Description |
+|------|------|-----------|-------------|
+| `productId` | String | no | Associated product ID |
+| `productVariantId` | String | no | Associated product variant ID |
+| `promotionalAssetId` | String | yes | Associated promotional asset ID |
 
 
 ### List Promotional Asset Links
@@ -714,14 +714,14 @@ Authorization: ApiKey $API_KEY
 
 **Query Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `accountId` | String | Account ID |
-| `first` | Number | Number of results to return per page |
-| `after` | String | ID given as the cursor in the previous page to read the next one |
-| `order` | String | Sort order for results: `CREATED_ASC` or `CREATED_DESC` |
-| `promotionalAssetId` | String | ID of the promotional asset to filter on |
-| `filter` | Object | Filter to apply (see below) |
+| Name | Type | Required? | Description |
+|------|------|-----------|-------------|
+| `accountId` | String | yes | Account ID |
+| `first` | Number | yes | Number of results to return per page |
+| `after` | String | no | ID given as the cursor in the previous page to read the next one |
+| `order` | String | yes | Sort order for results: `CREATED_ASC` or `CREATED_DESC` |
+| `promotionalAssetId` | String | no | ID of the promotional asset to filter on |
+| `filter` | Object | no | Filter to apply (see below) |
 
 **Filter Parameters**
 
@@ -744,10 +744,10 @@ Content-Type: application/json
 
 **Body Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `accountId` | String | Associated account ID |
-| `ids` | String list | Array of promotional asset link IDs to delete |
+| Name | Type | Required? | Description |
+|------|------|-----------|-------------|
+| `accountId` | String | yes | Associated account ID |
+| `ids` | String list | yes | Array of promotional asset link IDs to delete |
 
 ### Create a Data Carrier
 
@@ -757,7 +757,7 @@ Setting `useDefaultSettings` to true eliminates the need to set the
 `shortUrlDomain` and `urlFormat`; Illuminate creates the specified data carrier 
 type format using its default values.
 
-> If `useDefaultSettings` is set to false, `shortUrlDomain` and `urlFormat` 
+> \* If `useDefaultSettings` is set to false, `shortUrlDomain` and `urlFormat` 
 must be set regardless of `carrierType`.
 
 ```
@@ -768,15 +768,15 @@ Content-Type: application/json
 
 **Body Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `accountId` | String | Associated account ID |
-| `consumerProductVariantIdentification` | String | Customer-provided product variant identifier |
-| `digitalTwinId` | String | Digital twin ID associated with the data carrier |
-| `shortUrlDomain` | String | URL of the data carrier |
-| `carrierType` | String | Data carrier type format: `DIGITAL_WATERMARK` or `QR_CODE` |
-| `urlFormat` | String | Data carrier link format: `DigitalLink` or `ShortUrl` |
-| `useDefaultSettings` | Boolean | Use default settings for generating the data carrier |
+| Name | Type | Required? | Description |
+|------|------|-----------|-------------|
+| `accountId` | String | yes | Associated account ID |
+| `consumerProductVariantIdentification` | String | no | Customer-provided product variant identifier |
+| `digitalTwinId` | String | yes | Digital twin ID associated with the data carrier |
+| `shortUrlDomain` | String | * | URL of the data carrier |
+| `carrierType` | String | yes | Data carrier type format: `DIGITAL_WATERMARK` or `QR_CODE` |
+| `urlFormat` | String | * | Data carrier link format: `DigitalLink` or `ShortUrl` |
+| `useDefaultSettings` | Boolean | yes | Use default settings for generating the data carrier |
 
 ### List Data Carriers
 
@@ -787,17 +787,17 @@ Authorization: ApiKey $API_KEY
 
 **Query Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `accountId` | String | Account ID |
-| `filter` | Object | Filter to apply (see below) |
+| Name | Type | Required? | Description |
+|------|------|-----------|-------------|
+| `accountId` | String | yes | Account ID |
+| `filter` | Object | yes | Filter to apply (see below) |
 
 **Filter Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `digitalTwin.ids` | String list | List of digital twins to filter on |
-| `carrierTypes` | String list | List of data carrier types to filter on |
+| Name | Type | Required? | Description |
+|------|------|-----------|-------------|
+| `digitalTwin.ids` | String list | yes | List of digital twins to filter on |
+| `carrierTypes` | String list | yes | List of data carrier types to filter on |
 
 ### List Digital Twin Images
 
@@ -808,11 +808,11 @@ Authorization: ApiKey $API_KEY
 
 **Query Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `accountId` | String | Account ID |
-| `digitalTwinId` | String | Digital twin ID associated with the data carrier |
-| `first` | Number | Number of results to return per page |
+| Name | Type | Required? | Description |
+|------|------|-----------|-------------|
+| `accountId` | String | yes | Account ID |
+| `digitalTwinId` | String | yes | Digital twin ID associated with the data carrier |
+| `first` | Number | yes | Number of results to return per page |
 
 ### Upload a Digital Twin Image From File
 
@@ -828,13 +828,13 @@ Content-Type: application/json
 
 **Body Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `accountId` | String | Associated account ID |
-| `contentType` | String | Digital twin image content type: `jpg` or `png` |
-| `digitalTwinId` | String | Digital twin ID |
-| `fileName` | String | Digital twin image file name |
-| `isDefault` | Boolean | Set an image as the default |
+| Name | Type | Required? | Description |
+|------|------|-----------|-------------|
+| `accountId` | String | yes | Associated account ID |
+| `contentType` | String | yes | Digital twin image content type: `jpg` or `png` |
+| `digitalTwinId` | String | yes | Digital twin ID |
+| `fileName` | String | yes | Digital twin image file name |
+| `isDefault` | Boolean | yes | Set an image as the default |
 
 
 ```
@@ -845,10 +845,10 @@ Content-Type: application/json
 
 **Body Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `accountId` | String | Associated account ID |
-| `digitalTwinImageId` | String | Digital twin image ID |
+| Name | Type | Required? | Description |
+|------|------|-----------|-------------|
+| `accountId` | String | yes | Associated account ID |
+| `digitalTwinImageId` | String | yes | Digital twin image ID |
 
 ### Update a Digital Twin Image
 
@@ -860,17 +860,17 @@ Content-Type: application/json
 
 **Body Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `accountId` | String | ID of the target account |
-| `digitalTwinImageId` | String | ID of the digital twin image |
-| `patch` | `UpdateDigitalTwinImagePatch` | Data patch to apply to the target digital image |
+| Name | Type | Required? | Description |
+|------|------|-----------|-------------|
+| `accountId` | String | yes | ID of the target account |
+| `digitalTwinImageId` | String | yes | ID of the digital twin image |
+| `patch` | `UpdateDigitalTwinImagePatch` | yes | Data patch to apply to the target digital image |
 
 **UpdateDigitalTwinImagePatch**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `isDefault` | Boolean | Sets the image as the default. Must be `true`. If another image was previously set as the default, the flag is unset for that image. |
+| Name | Type | Required? | Description |
+|------|------|-----------|-------------|
+| `isDefault` | Boolean | yes | Sets the image as the default. Must be `true`. If another image was previously set as the default, the flag is unset for that image. |
 
 ### Create a Digital Twin Image From URL
 
@@ -882,14 +882,14 @@ Content-Type: application/json
 
 **Body Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `accountId` | String | Associated account ID |
-| `contentType` | String | Digital twin image content type: `jpg` or `png` |
-| `digitalTwinId` | String | Digital twin ID |
-| `fileName` | String | Digital twin image file name |
-| `isDefault` | Boolean | Setting an image as default |
-| `sourceUrl` | String | Source URL |
+| Name | Type | Required? | Description |
+|------|------|-----------|-------------|
+| `accountId` | String | yes | Associated account ID |
+| `contentType` | String | yes | Digital twin image content type: `jpg` or `png` |
+| `digitalTwinId` | String | yes | Digital twin ID |
+| `fileName` | String | yes | Digital twin image file name |
+| `isDefault` | Boolean | yes | Setting an image as default |
+| `sourceUrl` | String | yes | Source URL |
 
 ### Delete a Digital Twin Image
 
@@ -901,10 +901,10 @@ Content-Type: application/json
 
 **Body Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `accountId` | String | Associated account ID |
-| `digitalTwinImageId` | String | Digital twin image ID |
+| Name | Type | Required? | Description |
+|------|------|-----------|-------------|
+| `accountId` | String | yes | Associated account ID |
+| `digitalTwinImageId` | String | yes | Digital twin image ID |
 
 ### Create a Brand
 
@@ -916,10 +916,10 @@ Content-Type: application/json
 
 **Body Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `accountId` | String | Associated account ID |
-| `name` | String | Brand name |
+| Name | Type | Required? | Description |
+|------|------|-----------|-------------|
+| `accountId` | String | yes | Associated account ID |
+| `name` | String | yes | Brand name |
 
 ### List Brands
 
@@ -930,13 +930,13 @@ Authorization: ApiKey $API_KEY
 
 **Query Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `accountId` | String | Account ID |
-| `first` | Number | Number of results to return per page |
-| `after` | String | ID given as the cursor in the previous page to read the next one |
-| `order` | String | Sort order for results: `MODIFIED_ASC`, `MODIFIED_DESC`, `NAME_ASC`, or `NAME_DESC` |
-| `filter` | Object | Filter to apply (see below) |
+| Name | Type | Required? | Description |
+|------|------|-----------|-------------|
+| `accountId` | String | yes | Account ID |
+| `first` | Number | yes | Number of results to return per page |
+| `after` | String | no | ID given as the cursor in the previous page to read the next one |
+| `order` | String | yes | Sort order for results: `MODIFIED_ASC`, `MODIFIED_DESC`, `NAME_ASC`, or `NAME_DESC` |
+| `filter` | Object | no | Filter to apply (see below) |
 
 **Filter Parameters**
 
@@ -954,10 +954,10 @@ Content-Type: application/json
 
 **Body Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `accountId` | String | Associated account ID |
-| `name` | String | Functional name |
+| Name | Type | Required? | Description |
+|------|------|-----------|-------------|
+| `accountId` | String | yes | Associated account ID |
+| `name` | String | yes | Functional name |
 
 ### List Functional Names
 
@@ -968,13 +968,13 @@ Authorization: ApiKey $API_KEY
 
 **Query Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `accountId` | String | Account ID |
-| `first` | Number | Number of results to return per page |
-| `after` | String | ID given as the cursor in the previous page to read the next one |
-| `order` | String | Sort order for results: `MODIFIED_ASC`, `MODIFIED_DESC`, `NAME_ASC`, or `NAME_DESC` |
-| `filter` | Object | Filter to apply (see below) |
+| Name | Type | Required? | Description |
+|------|------|-----------|-------------|
+| `accountId` | String | yes | Account ID |
+| `first` | Number | yes | Number of results to return per page |
+| `after` | String | no | ID given as the cursor in the previous page to read the next one |
+| `order` | String | yes | Sort order for results: `MODIFIED_ASC`, `MODIFIED_DESC`, `NAME_ASC`, or `NAME_DESC` |
+| `filter` | Object | no | Filter to apply (see below) |
 
 **Filter Parameters**
 
@@ -993,10 +993,10 @@ Content-Type: application/json
 
 **Body Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `accountId` | String | Associated account ID |
-| `name` | String | Asset type name |
+| Name | Type | Required? | Description |
+|------|------|-----------|-------------|
+| `accountId` | String | yes | Associated account ID |
+| `name` | String | yes | Asset type name |
 
 ### List Asset Types
 
@@ -1007,13 +1007,13 @@ Authorization: ApiKey $API_KEY
 
 **Query Parameters**
 
-| Name | Type | Description |
-|------|------|-------------|
-| `accountId` | String | Account ID |
-| `first` | Number | Number of results to return per page |
-| `after` | String | ID given as the cursor in the previous page to read the next one |
-| `order` | String | Sort order for results: `MODIFIED_ASC`, `MODIFIED_DESC`, `NAME_ASC`, or `NAME_DESC` |
-| `filter` | Object | Filter to apply (see below) |
+| Name | Type | Required? | Description |
+|------|------|-----------|-------------|
+| `accountId` | String | yes | Account ID |
+| `first` | Number | yes | Number of results to return per page |
+| `after` | String | no | ID given as the cursor in the previous page to read the next one |
+| `order` | String | yes | Sort order for results: `MODIFIED_ASC`, `MODIFIED_DESC`, `NAME_ASC`, or `NAME_DESC` |
+| `filter` | Object | no | Filter to apply (see below) |
 
 **Filter Parameters**
 
