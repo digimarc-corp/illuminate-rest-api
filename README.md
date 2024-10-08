@@ -275,7 +275,7 @@ An easy way to get the digital twin's `id` is to call `GET /digitalTwins` with
 a filter and include the `productId` in the `product.ids` array:
 
 ```json
-filter: {
+"filter": {
     "product": {
         "ids": [
             "$PRODUCT_ID"
@@ -288,7 +288,7 @@ Similarly, to get the digital twin's `id` for a product variant or promotional
 asset, the filter might look like this:
 
 ```json
-filter: {
+"filter": {
     "productVariant": {
         "ids": [
             "$VARIANT_ID"
@@ -300,7 +300,7 @@ filter: {
 or 
 
 ```json
-filter: {
+"filter": {
     "promotionalAsset": {
         "ids": [
             "$PROMOASSET_ID"
