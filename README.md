@@ -69,6 +69,11 @@ product variants, and promotional assets. See [List Digital Twins](#list-digital
 | `productId` | String | ID of the product the digital twin relates to, if it relates to a product |
 | `resourceId` | String | ID of the resource the digital twin relates to |
 | `resourceType` | String | Type of the resource the digital twin relates to |
+| `serialAllocationSettings.length` * | Number | The length of the serial value in the range [6-20] |
+| `serialAllocationSettings.strategy` * | String | The type of serialization for the account: [RANDOM_ALPHANUMERIC, RANDOM_NUMERIC, SEQUENTIAL_NUMERIC] |
+| `serialAllocationSettings.symbols` * | String | The characters for the alphanumeric string within the [GS1 Application Identifier 21](https://ref.gs1.org/ai/21) set |
+
+&ast; Applies only to digital twins with [serialized watermarks](https://github.com/digimarc-corp/illuminate-serialization-api).
 
 ### Product
 
@@ -251,6 +256,20 @@ This section contains request examples and parameters for the available endpoint
 * [Create an Asset Type](#create-an-asset-type)
 * [List Asset Types](#list-asset-types)
 
+### Next Page Token
+
+Most GET endpoints include an optional `after` query parameter for getting 
+multiple pages of results. It might be helpful to examine the `next-page-token` 
+in the response header and set the `after` parameter to that value. 
+
+For example, if your account has 1000 digital twins, which you want in pages 
+of 100 twins each, you would set `first` to 100 and get the first 100 digital
+twins. For the next page, you set `after` to the `Id` of the 100th twin. For the 
+third page, you set `after` to the `Id` of the 200th twin, and so on.
+
+If `has-next-page` in the response header is true, set `after` to the value of 
+the `next-page-token`.
+
 #### About the Digital Twin ID
 
 When updating information about a product, variant, or promotional asset, 
@@ -362,7 +381,7 @@ Authorization: ApiKey $API_KEY
 |------|------|-----------|-------------|
 | `accountId` | String | yes | Account ID |
 | `first` | Number | yes | Number of results to return per page |
-| `after` | String | no | ID given as the cursor in the previous page to read the next one |
+| `after` | String | no | ID given as the cursor in the previous page to read the [next one](#next-page-token) |
 | `order` | String | yes | Sort order for results: `CREATED_ASC`, `CREATED_DESC`, `MODIFIED_ASC`, `MODIFIED_DESC`, `TYPE_ASC`, or `TYPE_DESC` |
 | `filter` | Object | no | Filter to apply (see below) |
 
@@ -452,7 +471,7 @@ Authorization: ApiKey $API_KEY
 |------|------|-----------|-------------|
 | `accountId` | String | yes | Account ID |
 | `first` | Number | yes | Number of results to return per page |
-| `after` | String | no | ID given as the cursor in the previous page to read the next one |
+| `after` | String | no | ID given as the cursor in the previous page to read the [next one](#next-page-token) |
 | `order` | String | yes | Sort order for results: `MODIFIED_ASC`, `MODIFIED_DESC`, `NAME_ASC`, or `NAME_DESC` |
 | `filter` | Object | no | Filter to apply (see below) |
 
@@ -551,7 +570,7 @@ Authorization: ApiKey $API_KEY
 |------|------|-----------|-------------|
 | `accountId` | String | yes | Account ID |
 | `first` | Number | yes | Number of results to return per page |
-| `after` | String | no | ID given as the cursor in the previous page to read the next one |
+| `after` | String | no | ID given as the cursor in the previous page to read the [next one](#next-page-token) |
 | `order` | String | yes | Sort order for results: `MODIFIED_ASC`, `MODIFIED_DESC`, `NAME_ASC`, or `NAME_DESC` |
 | `filter` | Object | no | Filter to apply (see below) |
 
@@ -638,7 +657,7 @@ Authorization: ApiKey $API_KEY
 |------|------|-----------|-------------|
 | `accountId` | String | yes | Account ID |
 | `first` | Number | yes | Number of results to return per page |
-| `after` | String | no | ID given as the cursor in the previous page to read the next one |
+| `after` | String | no | ID given as the cursor in the previous page to read the [next one](#next-page-token) |
 | `order` | String | yes | Sort order for results: `MODIFIED_ASC`, `MODIFIED_DESC`, `NAME_ASC`, or `NAME_DESC` |
 | `filter` | Object | no | Filter to apply (see below) |
 
@@ -718,7 +737,7 @@ Authorization: ApiKey $API_KEY
 |------|------|-----------|-------------|
 | `accountId` | String | yes | Account ID |
 | `first` | Number | yes | Number of results to return per page |
-| `after` | String | no | ID given as the cursor in the previous page to read the next one |
+| `after` | String | no | ID given as the cursor in the previous page to read the [next one](#next-page-token) |
 | `order` | String | yes | Sort order for results: `CREATED_ASC` or `CREATED_DESC` |
 | `promotionalAssetId` | String | no | ID of the promotional asset to filter on |
 | `filter` | Object | no | Filter to apply (see below) |
@@ -934,7 +953,7 @@ Authorization: ApiKey $API_KEY
 |------|------|-----------|-------------|
 | `accountId` | String | yes | Account ID |
 | `first` | Number | yes | Number of results to return per page |
-| `after` | String | no | ID given as the cursor in the previous page to read the next one |
+| `after` | String | no | ID given as the cursor in the previous page to read the [next one](#next-page-token) |
 | `order` | String | yes | Sort order for results: `MODIFIED_ASC`, `MODIFIED_DESC`, `NAME_ASC`, or `NAME_DESC` |
 | `filter` | Object | no | Filter to apply (see below) |
 
@@ -972,7 +991,7 @@ Authorization: ApiKey $API_KEY
 |------|------|-----------|-------------|
 | `accountId` | String | yes | Account ID |
 | `first` | Number | yes | Number of results to return per page |
-| `after` | String | no | ID given as the cursor in the previous page to read the next one |
+| `after` | String | no | ID given as the cursor in the previous page to read the [next one](#next-page-token) |
 | `order` | String | yes | Sort order for results: `MODIFIED_ASC`, `MODIFIED_DESC`, `NAME_ASC`, or `NAME_DESC` |
 | `filter` | Object | no | Filter to apply (see below) |
 
@@ -1011,7 +1030,7 @@ Authorization: ApiKey $API_KEY
 |------|------|-----------|-------------|
 | `accountId` | String | yes | Account ID |
 | `first` | Number | yes | Number of results to return per page |
-| `after` | String | no | ID given as the cursor in the previous page to read the next one |
+| `after` | String | no | ID given as the cursor in the previous page to read the [next one](#next-page-token) |
 | `order` | String | yes | Sort order for results: `MODIFIED_ASC`, `MODIFIED_DESC`, `NAME_ASC`, or `NAME_DESC` |
 | `filter` | Object | no | Filter to apply (see below) |
 
