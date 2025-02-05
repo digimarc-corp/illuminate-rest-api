@@ -1,7 +1,7 @@
-# Illuminate REST API
+# Digimarc Illuminate&trade; REST API
 
 The illuminate-rest-api repository contains information, examples, and useful 
-links for using the Illuminate REST API to work with platform resources, such 
+links for using the Digimarc Illuminate&trade; REST API to work with platform resources, such 
 as digital twins.
 
 * [Getting Started](#getting-started)
